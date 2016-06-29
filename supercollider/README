@@ -1,0 +1,23 @@
+docker run -t -i --env="DISPLAY" --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --volume="/var/lib/dbus:/var/lib/dbus" --device=/dev/snd supercollider
+
+
+xhost +
+#TODO
+# note that it's insecure, you should only allow the container and not everybody
+
+group audio must have the same id in the container and in the host
+
+Make it work on your machine !
+------------------------------
+
+Yeah sure docker images should be hardware agnostic
+but it was just easier for me to have my own config in the image
+so indeed, "works on my machine"
+
+change the /etc/asound.conf file (override it with ~/.asoundrc)
+and change the jackd start command with the right -dhw: option
+in files/init.sh (/usr/local/bin/init.sh)
+
+/usr/bin/jackd -r -dalsa -dhw:CODEC,0 -r48000 -p1024
+
+
